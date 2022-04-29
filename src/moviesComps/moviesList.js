@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 
 export const MoviesList = (props) => {
-
+    console.log("list")
     const {year, searchQ} = useParams()
     const [filteredMovies, setFilteredMovies] = useState(props.movies_ar)
 
-    if(searchQ) setFilteredMovies(filteredMovies.filter(mov => mov.title.toLowerCase().includes(searchQ.toLowerCase()) ))
-    if(year) setFilteredMovies(filteredMovies.filter(mov => parseInt(mov.Year) == parseInt(year)))
+    useEffect(() => {
+        if(year && year !== "" && year !== null) setFilteredMovies(props.movies_ar.filter(mov => parseInt(year) === parseInt(mov.Year)))
+        if(searchQ && searchQ !== "" && searchQ !== null)setFilteredMovies(props.movies_ar.filter(mov => mov.Title.toLowerCase().includes(searchQ.toLowerCase())))
+    }, [year, searchQ])
 
     return ( 
         <div className="container">

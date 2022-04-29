@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { sortBy } from "lodash"
-import { BrowserRouter as Router, Routes as Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { MoviesInput } from './moviesInput'
 import { MoviesList } from './moviesList'
 import { MovieInfo } from './movieInfo';
@@ -33,14 +33,18 @@ export const AppMovies = () => {
      setLoading(false);
   }
 
-  return (
+  if(!loading) return (
     <Router>
        {/* {loading ? <img src="/images/loading.gif" width="200" /> : ""} */}
       <MoviesInput sortMovies={sortMovies} setSearch={setSearch} />
       <Routes>
-        <Route exact path="/" render={() =><div> <MoviesList loading={loading} movies_ar={ar} /></div> } />
-        <Route exact path="/info/:id" component={MovieInfo} />
+        <Route path="/" element={<MoviesList loading={loading} movies_ar={ar} />} />
+        <Route path="/year/:year" element={<MoviesList loading={loading} movies_ar={ar} />} />
+        <Route path="*" element={<MoviesList loading={loading} movies_ar={ar} />} />
+        <Route path="/search/:searchQ" element={<MoviesList loading={loading} movies_ar={ar} />} />
+        <Route path="/info/:id" element={<MovieInfo/>} />
       </Routes>
     </Router>
   )
+  else return null
 }
